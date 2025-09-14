@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Job Application Form</title>
+  </head>
+  <body
+    style="font-family: Arial, sans-serif; background: #f4f6f8; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; position: relative;"
+  >
+    <form
+      id="jobForm"
+      style="background: #ffffff; width: 100%; max-width: 760px; box-sizing: border-box; padding-bottom: 20px;"
+    >
+      <div style="padding-left: 30px; padding-top: 20px;">
+        <h2 style="font-size: 22px; color: #111827; margin:0;">Connect With Experts</h2>
+        <p style="color: #4b5563; margin:0;">Schedule Free Home Inspections</p>
+      </div>
+      <hr style="margin: 16px 0;" />
+      <div style="padding: 26px; box-sizing: border-box;">
+        <!-- Name -->
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; margin-bottom: 12px; font-size: 16px; color: #374151;">Name</label>
+          <div style="display: flex; gap: 16px;">
+            <div style="flex: 1;">
+              <div style="font-size: 13px; color: #374151; margin-bottom: 6px;">First name</div>
+              <input
+                name="first_name"
+                type="text"
+                required
+                style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; box-sizing: border-box; font-size: 14px;"
+              />
+            </div>
+            <div style="flex: 1;">
+              <div style="font-size: 13px; color: #374151; margin-bottom: 6px;">Last name</div>
+              <input
+                name="last_name"
+                type="text"
+                required
+                style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; box-sizing: border-box; font-size: 14px;"
+              />
+            </div>
+          </div>
+        </div>
+
+        
+          <div style="margin-bottom: 22px;">
+            <div style="font-size: 13px; color: #374151; margin-bottom: 6px;">Email</div>
+            <input
+              name="email"
+              type="email"
+              required
+              style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; box-sizing: border-box; font-size: 14px;"
+            />
+            <div style="font-size: 13px; color: #374151; margin-top: 4px;">you@example.com</div>
+          </div>
+          <div style=" margin-bottom: 22px;">
+            <div style="font-size: 13px; color: #374151; margin-bottom: 6px;">Phone number</div>
+            <input
+              name="phone"
+              id="phone"
+              type="tel"
+              placeholder="9876543210"
+              required
+              style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; box-sizing: border-box; font-size: 14px;"
+            />
+            <div id="phoneError" style="font-size: 13px; color: red; margin-top: 4px; display:none;">
+              Mobile number must be exactly 10 digits
+            </div>
+          </div>
+       
+
+        <!-- Address -->
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 13px; color: #374151; margin-bottom: 6px;">Full address (city)</div>
+          <input
+            name="location"
+            type="text"
+            placeholder="e.g., Bengaluru"
+            style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; font-size: 14px; box-sizing: border-box;"
+          />
+        </div>
+
+        <!-- Date and Time fields -->
+        <div style="display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 180px;">
+            <div style="font-size: 13px; color: #374151; margin-bottom: 6px;">Preferred Date</div>
+            <input
+              type="date"
+              name="preferred_date"
+              required
+              style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; font-size: 14px; box-sizing: border-box;"
+            />
+          </div>
+          <div style="flex: 1; min-width: 180px;">
+            <div style="font-size: 13px; color: #374151; margin-bottom: 6px;">Preferred Time</div>
+            <input
+              type="time"
+              name="preferred_time"
+              required
+              style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; font-size: 14px; box-sizing: border-box;"
+            />
+          </div>
+        </div>
+      </div>
+
+      <hr style="margin: 16px 0;" />
+      <div style="display: flex; justify-content: center; padding-top: 10px; padding-bottom: 10px;">
+        <button
+          type="submit"
+          style="padding: 10px 56px; border: 0; background: #178e05; color: #fff; font-size: 14px; cursor: pointer; box-shadow: 0 6px 12px rgba(14, 165, 164, 0.18);"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+
+    <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;"></div>
+
+    <script>
+      const form = document.getElementById("jobForm");
+      const phoneInput = document.getElementById("phone");
+      const phoneError = document.getElementById("phoneError");
+
+      // Real-time phone validation
+      phoneInput.addEventListener("input", () => {
+        const val = phoneInput.value.trim();
+        if (/^\d{10}$/.test(val)) {
+          phoneError.style.display = "none";
+          phoneInput.style.border = "1px solid #d1d5db";
+        } else {
+          phoneError.style.display = "block";
+          phoneInput.style.border = "1px solid red";
+        }
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const phone = phoneInput.value.trim();
+
+        if (!/^\d{10}$/.test(phone)) {
+          showToast(" Mobile number must be exactly 10 digits", "red");
+          return;
+        }
+
+        const formData = {
+          first_name: e.target.first_name.value,
+          last_name: e.target.last_name.value,
+          email: e.target.email.value,
+          phone: phone,
+          location: e.target.location.value,
+          preferred_date: e.target.preferred_date.value,
+          preferred_time: e.target.preferred_time.value
+        };
+
+        fetch("https://script.google.com/macros/s/AKfycbyuDpLl5HTYzapsWiZCnzWlIsOo63BUdfX14TvMQngXZdyiYOm9251WuC2qOiuGzJ9QhA/exec", {
+          method: "POST",
+          body: JSON.stringify(formData)
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.status === "success") {
+              showToast(" Form submitted successfully!", "green");
+              form.reset();
+            } else {
+              showToast("Error: " + data.message, "red");
+            }
+          })
+          .catch(err => {
+            showToast(" Something went wrong.", "red");
+            console.error(err);
+          });
+      });
+
+      
+      function showToast(message, color) {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.innerText = message;
+        toast.style.minWidth = "250px";
+        toast.style.padding = "14px 18px";
+        toast.style.borderRadius = "6px";
+        toast.style.color = "#fff";
+        toast.style.fontSize = "15px";
+        toast.style.fontWeight = "bold";
+        toast.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(100%)";
+        toast.style.transition = "all 0.4s ease-in-out";
+        toast.style.backgroundColor = color;
+
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.opacity = "1";
+          toast.style.transform = "translateX(0)";
+        }, 100);
+
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transform = "translateX(100%)";
+          setTimeout(() => container.removeChild(toast), 400);
+        }, 4000);
+      }
+    </script>
+  </body>
+</html>
